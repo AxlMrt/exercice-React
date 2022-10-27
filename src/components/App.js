@@ -6,29 +6,36 @@ import Overview from './Overview';
 function App() {
   const [taskArray, setTaskArray] = React.useState([]);
 
-  function handleChange(e) {
-    const newData = e.taget.value;
-    setTaskArray((prevData) => ({
-      ...prevData,
-      newData,
-    }));
+  const [tasks, setTasks] = React.useState({
+    task: '',
+  });
+
+  function addTasks() {
+    setTaskArray((current) => [...current, tasks]);
   }
 
-  function onSubmit(e) {
-    e.preventDefault();
-    setTaskArray({
-      setTaskArray: taskArray.concat(taskArray),
-      taskArray: { text: '' },
-    });
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setTasks((prevInput) => ({
+      ...prevInput,
+      [name]: value,
+    }));
   }
 
   return (
     <div>
-      <form onSubmit={onSubmit}>
-        <input type="text" onChange={handleChange} />
-        <button type="submit">Send</button>
-      </form>
-      <Overview />
+      <input
+        type="text"
+        name="task"
+        value={tasks.task}
+        onChange={handleChange}
+      />
+      <button onClick={addTasks}>Send</button>
+
+      <Overview
+        key={taskArray.length - 1}
+        task={taskArray}
+      />
     </div>
   );
 }
